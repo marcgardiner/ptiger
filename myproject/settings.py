@@ -11,10 +11,33 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
+from __future__ import unicode_literals
+from .conf.dev import *
+from utils.misc import get_media_svn_revision, get_git_changeset
+
 import os
+import sys
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
+MEDIA_ROOT = os.path.join(BASE_DIR, "myproject", "media")
+
+STATIC_ROOT = os.path.join(BASE_DIR, "myproject", "static")
+
+STATICFILES_DIR = (os.path.join(BASE_DIR, "myproject", "site_static"),)
+
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, "myproject", "templates"),)
+
+LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"), )
+
+FILE_UPLOAD_TEMP_DIR = os.path.join(BASE_DIR, "myproject", "tmp")
+
+EXTERNAL_LIBS_PATH = os.path.join(BASE_DIR, "externals", "libs")
+
+EXTERNAL_APPS_PATH = os.path.join(BASE_DIR, "externals", "apps")
+
+sys.path = ["", EXTERNAL_LIBS_PATH, EXTERNAL_APPS_PATH] + sys.path
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -75,11 +98,20 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    'default' : {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'myproject',
+        'USER': 'root',
+        'PASSWORD': 'root',
     }
 }
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+#}
 
 
 # Internationalization
@@ -99,4 +131,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
+
+#STATIC_URL = "/static/%s" % get_media_svn_revision(BASE_DIR)
+
+STATIC_URL = "/static/%s/" % get_git_changeset(BASE_DIR)
+
+try:
+    execfile(os.path.join(os.path.dirname(__file__), "local_settings.py"))
+except IOError:
+    pass

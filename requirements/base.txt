@@ -1,4 +1,12 @@
-#base.txt
-
+appdirs==1.4.3
 Django==1.8
-djangorestframework -e git://github.com/omab/pthon-social-auth.git@6b1e301c79#egg=python-social-auth
+django-debug-toolbar==1.7
+djangorestframework==3.6.2
+MySQL-python==1.2.5
+olefile==0.44
+packaging==16.8
+Pillow==4.1.0
+pyparsing==2.2.0
+selenium==3.3.3
+six==1.10.0
+sqlparse==0.2.3
